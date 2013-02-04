@@ -1,0 +1,19 @@
+{
+  "name": "lwes-emitter",
+  "version": "0.0.2",
+  "description": "Emitting UDP packet for LWES",
+  "main": "lwes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/oren/LWES-emitter.git"
+  },
+  "keywords": [
+    "lwes"
+  ],
+  "author": "oren",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}
