@@ -48,12 +48,9 @@ function emit(config, data) {
   sendUDP(buf, config.port, config.host);
 };
 
+// TBD
 function validateInput(arguments) {
-  // console.log(arguments);
-  // if (arguments.length !== 4) {
-  //   console.log('emit() expects 4 arguments');
-  // }
-}
+};
 
 // Serializes the event into a buffer for transmission
 //
@@ -85,7 +82,6 @@ function buildEvent(type, data) {
       numOfAttributes++;
       bufLength += (key.length + data[key].length + 8);
     });
-    console.log('Allocated buffer size', bufLength);
   };
 
   // push the event type | corresponds to line 335 in lwes_event.c
@@ -204,7 +200,6 @@ function buildEvent(type, data) {
   };
 
   function writeint64(attribute, val) {
-    console.log(attribute, val);
     // write length of attribute (1 byte) 
     buf.writeUInt8(attribute.length, offset);
     offset++;
@@ -226,7 +221,6 @@ function buildEvent(type, data) {
       return parseInt(x, 10);
     });
 
-    console.log(attribute, val);
     // write length of attribute (1 byte) 
     buf.writeUInt8(attribute.length, offset);
     offset++;
@@ -273,8 +267,6 @@ function sendUDP(message, port, host) {
   });
 
   try {
-    console.log("buffer's real content", offset);
-
     client.send(message, 0, offset, port, host, delivered);
   } catch(e) {
     console.log('Error in sending UDP', e);
@@ -284,7 +276,7 @@ function sendUDP(message, port, host) {
     if(err) {
       console.log("Error in the delivery of UDP: ", err);
     } else {
-      console.log("UDP was Sent", message);
+      console.log("LWES event was sent");
     };
     client.close();
   };
