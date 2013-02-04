@@ -1,23 +1,21 @@
 var emit = require('./lwes.js');
 
 var config = {
+  type: 'performance-event',
   port: 12345, 
   host: '127.0.0.1'
 };
 
-// "name": "YP::Mon::Perf",
-// "RequesterIP": "127.0.0.1",
-
 var data = {
  "aid": "push-service",
  "avid": "0.1",
- "eid": "where do i get the event id",
+ "eid": "event-889",
  "inreq": "/register",
  "method": "POST /register",
- "rid": "where do i get request id",
+ "rid": "request-123",
   "enc": ["1", "int16"],
   "code": ["200", "int32"],
-  "rt_total": [1, "int64"],
+  "rt_total": ["89", "int64"],
   "RequesterIP": ["127.0.0.1", "ip"],
 
   "name1": "myService", 
@@ -27,5 +25,5 @@ var data = {
    "rt1": "250"
 };
 
-emit(config, "performance-event", data);
+emit(config, data);
 

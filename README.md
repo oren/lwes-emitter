@@ -6,6 +6,7 @@ No dependencies or calling external C libraries, just using Node.js.
     emit = require('lwes-emitter');
 
     var config = {
+      type: 'performance-event',
       port: 12345, 
       host: '127.0.0.1'
     };
@@ -29,7 +30,7 @@ No dependencies or calling external C libraries, just using Node.js.
        "rt1": "250"
     };
 
-    emit(config, "performance-event", data);
+    emit(config, data);
 
 
 ## Install

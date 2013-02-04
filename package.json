@@ -1,6 +1,6 @@
 {
   "name": "lwes-emitter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Emitting UDP packet for LWES",
   "main": "lwes.js",
   "scripts": {

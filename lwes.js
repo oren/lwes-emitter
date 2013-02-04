@@ -38,13 +38,13 @@ var LWES_INT_64_TOKEN   = 0x07;
 // usage:
 // emit("performance-event", {"code1": "201"});
 
-function emit(config, type, data) {
+function emit(config, data) {
   validateInput(arguments);
   offset = 0;
   numOfAttributes = 0;
   bufLength = 30;
 
-  buf = buildEvent(type, data);
+  buf = buildEvent(config.type, data);
   sendUDP(buf, config.port, config.host);
 };
 
