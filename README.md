@@ -10,9 +10,6 @@ No dependencies or calling external C libraries, just using Node.js.
       host: '127.0.0.1'
     };
 
-    // "name": "YP::Mon::Perf",
-    // "RequesterIP": "127.0.0.1",
-    
     var data = {
      "aid": "push-service",
      "avid": "0.1",
