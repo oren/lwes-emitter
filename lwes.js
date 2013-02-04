@@ -24,9 +24,10 @@ var offset = null;               // tracks the next position in the buffer to wr
 var numOfAttributes = null;
 var bufLength = null;            // estimating the required bytes for the buffer
 
-var LWES_STRING_STRING  = 0x05;
 var LWES_INT_16_TOKEN   = 0x02;
 var LWES_INT_32_TOKEN   = 0x04;
+var LWES_STRING_STRING  = 0x05;
+var LWES_IP_ADDR_TOKEN  = 0x06;
 var LWES_INT_64_TOKEN   = 0x07;
 
 // Emit the LWES event
@@ -41,7 +42,7 @@ function emit(config, type, data) {
   validateInput(arguments);
   offset = 0;
   numOfAttributes = 0;
-  bufLength = 16;
+  bufLength = 30;
 
   buf = buildEvent(type, data);
   sendUDP(buf, config.port, config.host);
@@ -160,6 +161,9 @@ function buildEvent(type, data) {
       case 'int64':
         writeint64(attribute, parseInt(val[0], 10));
         break;
+      case 'ip':
+        writeIp(attribute, val[0]);
+        break;
       default:
         // code
     };
@@ -200,6 +204,7 @@ function buildEvent(type, data) {
   };
 
   function writeint64(attribute, val) {
+    console.log(attribute, val);
     // write length of attribute (1 byte) 
     buf.writeUInt8(attribute.length, offset);
     offset++;
@@ -214,6 +219,37 @@ function buildEvent(type, data) {
     // write int64 (8 bytes)
     buf.writeDoubleBE(val, offset);
     offset += 8;
+  };
+
+  function writeIp(attribute, val) {
+    val = val.split('.').map(function(x){
+      return parseInt(x, 10);
+    });
+
+    console.log(attribute, val);
+    // write length of attribute (1 byte) 
+    buf.writeUInt8(attribute.length, offset);
+    offset++;
+
+    // write attribute (string)
+    offset += buf.write(attribute, offset);
+
+    // write type of the value (1 byte). it's always writeuint8
+    buf.writeUInt8(LWES_IP_ADDR_TOKEN, offset);
+    offset++;
+
+    // write uint8 (1 byte)
+    buf.writeUInt8(val[3], offset);
+    offset ++;
+    // write uint8 (1 byte)
+    buf.writeUInt8(val[2], offset);
+    offset ++;
+    // write uint8 (1 byte)
+    buf.writeUInt8(val[1], offset);
+    offset ++;
+    // write uint8 (1 byte)
+    buf.writeUInt8(val[0], offset);
+    offset ++;
   };
 };
 

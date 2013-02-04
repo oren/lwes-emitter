@@ -17,7 +17,8 @@ var data = {
  "rid": "where do i get request id",
   "enc": ["1", "int16"],
   "code": ["200", "int32"],
-  "rt_total": ["89", "int64"],
+  "rt_total": [1, "int64"],
+  "RequesterIP": ["127.0.0.1", "ip"],
 
   "name1": "myService", 
   "req1": "myservice.foo.com/registration", 
