@@ -15,7 +15,7 @@ var data = {
  "rid": "request-123",
   "enc": ["1", "int16"],
   "code": ["200", "int32"],
-  "rt_total": ["89", "int64"],
+  "rt_total": "89",
   "RequesterIP": ["127.0.0.1", "ip"],
 
   "name1": "myService", 

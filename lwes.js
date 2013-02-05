@@ -18,7 +18,7 @@
 module.exports = emit;
 
 var dgram = require('dgram');
-var client = dgram.createSocket("udp4");
+var server = dgram.createSocket("udp4");
 var buf = null;                  // will hold the buffer for sending
 var offset = null;               // tracks the next position in the buffer to write to
 var numOfAttributes = null;
@@ -30,8 +30,8 @@ var LWES_STRING_STRING  = 0x05;
 var LWES_IP_ADDR_TOKEN  = 0x06;
 var LWES_INT_64_TOKEN   = 0x07;
 
-client.bind();
-client.setMulticastTTL(128);
+server.bind();
+server.setMulticastTTL(128);
 
 // Emit the LWES event
 //
@@ -262,12 +262,12 @@ function buildEvent(type, data) {
 // private
 
 function sendUDP(message, port, host) {
-  client.on('error', function(e) {
+  server.on('error', function(e) {
     console.log('Error in sending UPD', e);
   });
 
   try {
-    client.send(message, 0, offset, port, host, delivered);
+    server.send(message, 0, offset, port, host, delivered);
   } catch(e) {
     console.log('Error in sending UDP', e);
   };
