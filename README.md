@@ -42,6 +42,8 @@ No dependencies or calling external C libraries, just using Node.js.
 
 ## Listen to events
 
+### Using C
+
 Install the [LWES C library](https://github.com/lwes/lwes) on your machine and run:
 
     lwes-event-printing-listener -m 127.0.0.1
@@ -69,3 +71,15 @@ You should see this output:
       avid = 0.1;
     }
 
+### Using Ruby
+
+    require 'lwes'
+     
+    listener = LWES::Listener.new :address => "224.1.2.22", :port => 1222
+      
+    # either do recv to print the first event it sees or each do loop through all events
+    listener.recv
+       
+    #listener.each do |event|
+    #  puts event
+    #end
