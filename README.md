@@ -11,27 +11,30 @@ No dependencies or calling external C libraries, just using Node.js.
       host: '127.0.0.1'
     };
 
-    var data = {
-     "aid": "push-service",
-     "avid": "0.1",
-     "eid": "event-889",
-     "inreq": "/register",
-     "method": "POST /register",
-     "rid": "request-123",
-      "enc": ["1", "int16"],
-      "code": ["200", "int32"],
-      "rt_total": ["89", "int64"],
-      "RequesterIP": ["127.0.0.1", "ip"],
 
-      "name1": "myService", 
-      "req1": "myservice.foo.com/registration", 
-       "code1": "201",
-       "resp1": "{}",
-       "rt1": "250"
-    };
+    performance-event[18]
+    {
+      SenderPort = 49919;
+      inreq = /register;
+      rid = request-123;
+      RequesterIP = 127.0.0.1;
+      enc = 1;
+      name1 = myService;
+      code = 200;
+      rt_total = 89;
+      rt1 = 250;
+      aid = push-service;
+      code1 = 201;
+      method = POST /register;
+      ReceiptTime = 1360040208062;
+      eid = event-889;
+      SenderIP = 127.0.0.1;
+      req1 = myservice.foo.com/registration;
+      resp1 = {};
+      avid = 0.1;
+    }
 
     emit(config, data);
-
 
 ## Install
 
