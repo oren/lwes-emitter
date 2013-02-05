@@ -75,7 +75,7 @@ You should see this output:
 
     require 'lwes'
      
-    listener = LWES::Listener.new :address => "224.1.2.22", :port => 1222
+    listener = LWES::Listener.new :address => "224.100.100.1", :port => 4455
       
     # either do recv to print the first event it sees or each do loop through all events
     listener.recv
