@@ -2,8 +2,16 @@
 //
 // based on the C library - https://github.com/lwes/lwes
 //
+// parameters:
+// config - hash with type, port and host
+// data - hash with data to send
+// callback (optional) - will be called on error or success
+//
+// The lwes object is also an event emitter with data and error events
+// so you can listen to those instead of passing a callback
+//
 // usage:
-// emit = require('./emit-lwes.js');
+// lwes = require('./emit-lwes.js');
 // var data = {
 //   "name1": "pushService", 
 //   "req1": "myservice.foo.com/registration", 
@@ -12,13 +20,27 @@
 //   "rt1": "250"
 // };
 //
-// emit({port: 12345, host: '127.0.0.1'}, "performance-event", data);
+// function sent(err, bytes) {
+//   if (err) {
+//     console.log('error', err);
+//   } else {
+//     console.log('LWES was sent');
+//   }
+// };
+//
+// lwes.send({type: 'performance-event', port: 12345, host: '127.0.0.1'}, data, sent);
 
 
-module.exports = emit;
+// module.exports = emit;
 
+// core module
 var dgram = require('dgram');
+var EventEmitter = require('events').EventEmitter;
+
 var server = dgram.createSocket("udp4");
+var emitter = new EventEmitter();
+module.exports = emitter;
+
 var buf = null;                  // will hold the buffer for sending
 var offset = null;               // tracks the next position in the buffer to write to
 var numOfAttributes = null;
@@ -41,14 +63,14 @@ server.setMulticastTTL(128);
 // usage:
 // emit("performance-event", {"code1": "201"});
 
-function emit(config, data) {
+emitter.send = function (config, data, cb) {
   validateInput(arguments);
   offset = 0;
   numOfAttributes = 0;
   bufLength = 30;
 
   buf = buildEvent(config.type, data);
-  sendUDP(buf, config.port, config.host);
+  sendUDP(buf, config.port, config.host, cb);
 };
 
 // TBD
@@ -261,22 +283,21 @@ function buildEvent(type, data) {
 //
 // private
 
-function sendUDP(message, port, host) {
-  server.on('error', function(e) {
-    console.log('Error in sending UPD', e);
+function sendUDP(message, port, host, cb) {
+  server.on('error', function(err) {
+    emitter.emit('error', 'Error in sending of UDP: ', err); 
+    cb && cb('Error in sending of UDP: ', err);
   });
-
-  try {
-    server.send(message, 0, offset, port, host, delivered);
-  } catch(e) {
-    console.log('Error in sending UDP', e);
-  };
 
   function delivered(err, bytes) {
     if(err) {
-      console.log("Error in the delivery of UDP: ", err);
+      emitter.emit('error', 'Error in the delivering of UDP: ', err); 
+      cb && cb('Error in delivering of UDP: ', err);
     } else {
-      console.log("LWES event was sent");
+      emitter.emit('data', 'LWES was sent'); 
+      cb && cb(null, bytes);
     };
   };
+
+  server.send(message, 0, offset, port, host, delivered);
 };

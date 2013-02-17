@@ -1,4 +1,4 @@
-var emit = require('./lwes.js');
+var lwes = require('./lwes.js');
 
 var config = {
   type: 'performance-event',
@@ -25,5 +25,28 @@ var data = {
    "rt1": "250"
 };
 
-emit(config, data);
+// lwes is an event emitter
+
+lwes.on('data', function(data) { 
+  console.log('LWES data event.', data);
+});
+
+lwes.on('error', function(err) { 
+  console.log('LWES error event.', err);
+});
+
+// but it also allow passing a callback
+
+function sent(err, bytes) {
+  if (err) {
+    console.log('error', err);
+  } else {
+    console.log('LWES was sent');
+  }
+};
+
+// the last argument, the callback, in optional
+lwes.send(config, data, sent);
+
+
 
